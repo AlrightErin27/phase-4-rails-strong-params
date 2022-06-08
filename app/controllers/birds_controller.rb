@@ -1,5 +1,4 @@
 class BirdsController < ApplicationController
-
   # GET /birds
   def index
     birds = Bird.all
@@ -7,8 +6,13 @@ class BirdsController < ApplicationController
   end
 
   # POST /birds
+  # def create
+  #   bird = Bird.create(params.permit(:name, :species))
+  #   render json: bird, status: :created
+  # end
+
   def create
-    bird = Bird.create(name: params[:name], species: params[:species])
+    bird = Bird.create(bird_params)
     render json: bird, status: :created
   end
 
@@ -18,8 +22,13 @@ class BirdsController < ApplicationController
     if bird
       render json: bird
     else
-      render json: { error: "Bird not found" }, status: :not_found
+      render json: { error: 'Bird not found' }, status: :not_found
     end
   end
 
+  private
+
+  def bird_params
+    params.permit(:name, :species)
+  end
 end
